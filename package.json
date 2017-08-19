@@ -1,0 +1,30 @@
+{
+  "name": "babel-plugin-transform-jsx-directive",
+  "version": "0.1.0",
+  "description": "apply directives to jsx components based on component names or props",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Xiphe/babel-plugin-transform-jsx-directives.git"
+  },
+  "keywords": [
+    "jsx",
+    "react",
+    "directive",
+    "babel"
+  ],
+  "author": "Hannes Diercks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Xiphe/babel-plugin-transform-jsx-directives/issues"
+  },
+  "homepage": "https://github.com/Xiphe/babel-plugin-transform-jsx-directives#readme",
+  "devDependencies": {
+    "eslint": "4.5.0",
+    "eslint-config-airbnb-base": "11.3.1",
+    "eslint-plugin-import": "2.7.0"
+  }
+}
