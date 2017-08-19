@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-transform-jsx-directive",
+  "name": "babel-plugin-transform-jsx-directives",
   "version": "0.1.0",
   "description": "apply directives to jsx components based on component names or props",
   "main": "index.js",
