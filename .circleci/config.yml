@@ -56,7 +56,7 @@ jobs:
       - restore_cache:
           keys:
           - v1-repo-{{ checksum ".circle-sha" }}
-      - run: npm run semantic-release
+      - run: npm run semantic-release || true
 
 workflows:
   version: 2
