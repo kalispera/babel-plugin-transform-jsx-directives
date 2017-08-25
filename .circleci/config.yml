@@ -6,6 +6,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run:
+          name: save SHA to a file
+          command: echo $CIRCLE_SHA1 > .circle-sha
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package-lock.json" }}
@@ -14,32 +17,45 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - save_cache:
+          paths:
+            - ~/repo
+          key: v1-repo-{{ checksum ".circle-sha" }}
   lint:
     docker:
       - image: circleci/node:8
     working_directory: ~/repo
     steps:
+      - run:
+          name: save SHA to a file
+          command: echo $CIRCLE_SHA1 > .circle-sha
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-repo-{{ checksum ".circle-sha" }}
       - run: npm run lint
   test:
     docker:
       - image: circleci/node:8
     working_directory: ~/repo
     steps:
+      - run:
+          name: save SHA to a file
+          command: echo $CIRCLE_SHA1 > .circle-sha
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-repo-{{ checksum ".circle-sha" }}
       - run: npm test -- --coverage
   deploy:
     docker:
       - image: circleci/node:8
     working_directory: ~/repo
     steps:
+      - run:
+          name: save SHA to a file
+          command: echo $CIRCLE_SHA1 > .circle-sha
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
+          - v1-repo-{{ checksum ".circle-sha" }}
       - run: npm run semantic-release
 
 workflows:
