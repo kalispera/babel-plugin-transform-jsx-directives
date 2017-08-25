@@ -1,15 +1,16 @@
 {
   "name": "babel-plugin-transform-jsx-directives",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "description": "apply directives to jsx components based on component names or props",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Xiphe/babel-plugin-transform-jsx-directives.git"
+    "url": "https://github.com/Xiphe/babel-plugin-transform-jsx-directives.git"
   },
   "keywords": [
     "jsx",
@@ -37,16 +38,21 @@
     }
   },
   "homepage": "https://github.com/Xiphe/babel-plugin-transform-jsx-directives#readme",
+  "release": {
+    "verifyConditions": "condition-circle"
+  },
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-jest": "20.0.3",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-env": "1.6.0",
     "babel-preset-react": "6.24.1",
+    "condition-circle": "1.5.0",
     "eslint": "4.5.0",
     "eslint-config-airbnb-base": "11.3.1",
     "eslint-plugin-import": "2.7.0",
-    "jest": "20.0.4"
+    "jest": "20.0.4",
+    "semantic-release": "7.0.2"
   },
   "dependencies": {
     "babel-plugin-syntax-jsx": "^6.18.0",

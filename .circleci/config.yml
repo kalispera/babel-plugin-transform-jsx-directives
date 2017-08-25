@@ -20,5 +20,11 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
 
+  test:
+    steps:
       - run: npm run lint
       - run: npm test -- --coverage
+
+  deploy:
+    steps:
+      - run: npm run semantic-release
