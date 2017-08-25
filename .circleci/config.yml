@@ -37,10 +37,7 @@ workflows:
   version: 2
   test-and-deploy:
     jobs:
-      - checkout_code
-      - install:
-          requires:
-            - checkout_code
+      - install
       - lint:
           requires:
             - install
@@ -51,3 +48,6 @@ workflows:
           requires:
             - test
             - lint
+          filters:
+            branches:
+              only: master
