@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "build": "rm -rf lib && babel src -d lib",
+    "semantic-release": "semantic-release pre && npm build && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
     "verifyConditions": "condition-circle"
   },
   "devDependencies": {
+    "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-jest": "20.0.3",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
@@ -55,7 +57,6 @@
     "semantic-release": "7.0.2"
   },
   "dependencies": {
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-register": "^6.26.0"
+    "babel-plugin-syntax-jsx": "^6.18.0"
   }
 }
