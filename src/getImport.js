@@ -18,10 +18,7 @@ export default function getImport({ types: t }, path, directiveName, directiveSo
   const uid = rootPath.scope.generateUidIdentifier(`${directiveName}Directive`);
 
   const newImport = t.importDeclaration(
-    [t.importSpecifier(
-      uid,
-      t.identifier('render')
-    )],
+    [t.importDefaultSpecifier(uid)],
     t.stringLiteral(directiveSource)
   );
 
