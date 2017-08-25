@@ -19,18 +19,27 @@ jobs:
       - image: circleci/node:8
     working_directory: ~/repo
     steps:
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
       - run: npm run lint
   test:
     docker:
       - image: circleci/node:8
     working_directory: ~/repo
     steps:
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
       - run: npm test -- --coverage
   deploy:
     docker:
       - image: circleci/node:8
     working_directory: ~/repo
     steps:
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
       - run: npm run semantic-release
 
 workflows:
