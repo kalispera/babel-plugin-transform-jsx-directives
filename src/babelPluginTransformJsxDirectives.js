@@ -1,5 +1,5 @@
 import jsxSyntax from 'babel-plugin-syntax-jsx';
-import getDirectives from './getDirectives';
+import normalizeDirectives from './normalizeDirectives';
 import importDirective from './importDirective';
 import createDirective from './createDirective';
 import attributesToObject from './attributesToObject';
@@ -22,7 +22,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
         const directives = getApplicableDirectives(
           t,
           path,
-          getDirectives(state.opts)
+          normalizeDirectives(state.opts)
         );
 
         if (!directives.length) {

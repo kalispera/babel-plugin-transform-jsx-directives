@@ -1,7 +1,5 @@
 import * as babel from 'babel-core';
 import plugin from '../src/index';
-import { reset } from '../src/getDirectives';
-import { render } from './directives/action';
 
 function transform(code, options = {}, presets = []) {
   return babel.transform(code, {
@@ -10,24 +8,7 @@ function transform(code, options = {}, presets = []) {
   }).code.replace(new RegExp(process.cwd(), 'g'), '.');
 }
 
-/* sanity check */
-describe('action directive', () => {
-  it('has a no-op render', () => {
-    const Elm = Symbol('Elm');
-    const props = Symbol('props');
-    const ret = Symbol('return');
-    const next = jest.fn(() => ret);
-
-    expect(render({ Elm, props, next })).toBe(ret);
-    expect(next).toHaveBeenCalledWith(Elm, props);
-  });
-});
-
 describe('babel-plugin-transform-jsx-directives', () => {
-  afterEach(() => {
-    reset();
-  });
-
   it('understands jsx', () => {
     expect(transform('<foo />')).toMatchSnapshot();
   });
@@ -37,7 +18,11 @@ describe('babel-plugin-transform-jsx-directives', () => {
       '<html foo="bar">foo</html>',
       {
         directives: [
-          'test/directives/html.js',
+          {
+            name: 'html',
+            type: 'element',
+            source: './test/directives/html.js',
+          },
         ],
       }
     )).toMatchSnapshot();
@@ -48,7 +33,10 @@ describe('babel-plugin-transform-jsx-directives', () => {
       '<Button action={click} foo={bar}>baz</Button>',
       {
         directives: [
-          'test/directives/action.js',
+          {
+            name: 'action',
+            source: './test/directives/action.js',
+          },
         ],
       }
     )).toMatchSnapshot();
@@ -63,7 +51,10 @@ describe('babel-plugin-transform-jsx-directives', () => {
       `,
       {
         directives: [
-          'test/directives/action.js',
+          {
+            name: 'action',
+            source: './test/directives/action.js',
+          },
         ],
       }
     )).toMatchSnapshot();
@@ -76,8 +67,16 @@ describe('babel-plugin-transform-jsx-directives', () => {
       `,
       {
         directives: [
-          'test/directives/html.js',
-          'test/directives/action.js',
+          {
+            name: 'html',
+            type: 'element',
+            priority: 100,
+            source: './test/directives/html.js',
+          },
+          {
+            name: 'action',
+            source: './test/directives/action.js',
+          },
         ],
       }
     );
@@ -92,7 +91,11 @@ describe('babel-plugin-transform-jsx-directives', () => {
       `,
       {
         directives: [
-          'test/directives/html.js',
+          {
+            name: 'html',
+            type: 'element',
+            source: './test/directives/html.js',
+          },
         ],
       }
     );
