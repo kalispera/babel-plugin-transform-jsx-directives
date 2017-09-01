@@ -24,14 +24,22 @@ function load(directives, original = false) {
   }
 }
 
+function isNodeModule(file) {
+  try {
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    require(`${file}/package.json`);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function resolveSource(file, source) {
   if (source.indexOf('.') !== 0) {
     return source;
   }
 
-  const dirname = path.dirname(file);
-
-  if (dirname === '.') {
+  if (isNodeModule(file)) {
     return path.join(file, source);
   }
 
