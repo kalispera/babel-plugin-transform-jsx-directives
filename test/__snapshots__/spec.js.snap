@@ -8,6 +8,13 @@ exports[`babel-plugin-transform-jsx-directives applies directives in nested elem
       </_Elm>} />;"
 `;
 
+exports[`babel-plugin-transform-jsx-directives applies multiple directives loaded from one config 1`] = `
+"import _htmlDirective from \\"./test/directives/htmlDirective.js\\";
+import _actionDirective from \\"/abs/test/directives/action.js\\";
+
+<_htmlDirective Elm=\\"html\\" props={{}} next={(_Elm2, _props2) => <_actionDirective Elm={_Elm2} props={_props2} options=\\"test\\" next={(_Elm, _props) => <_Elm {..._props} />} />} />;"
+`;
+
 exports[`babel-plugin-transform-jsx-directives applies multiple directives on same element 1`] = `
 "import _htmlDirective from \\"./test/directives/html.js\\";
 import _actionDirective from \\"./test/directives/action.js\\";
@@ -21,6 +28,18 @@ exports[`babel-plugin-transform-jsx-directives converts jsx spread operators to 
 <_htmlDirective Elm=\\"html\\" props={{
       ...bar
 }} next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
+exports[`babel-plugin-transform-jsx-directives handles directive paths 1`] = `
+"import _htmlDirective from \\"./test/directives/htmlDirective.js\\";
+<_htmlDirective Elm=\\"html\\" props={{
+  foo: \\"bar\\"
+}} next={(_Elm, _props) => <_Elm {..._props}>foo</_Elm>} />;"
+`;
+
+exports[`babel-plugin-transform-jsx-directives imports directive module 1`] = `
+"import _changelogDirective from \\"conventional-changelog/conventionalChangelogDirective.js\\";
+<_changelogDirective Elm=\\"changelog\\" props={{}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
 exports[`babel-plugin-transform-jsx-directives transforms an atrribute directive 1`] = `

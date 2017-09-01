@@ -1,5 +1,8 @@
 import * as babel from 'babel-core';
 import plugin from '../src/index';
+import errorMatching from './helpers/errorMatching';
+
+jest.mock('conventional-changelog');
 
 function transform(code, options = {}, presets = []) {
   return babel.transform(code, {
@@ -23,6 +26,17 @@ describe('babel-plugin-transform-jsx-directives', () => {
             type: 'element',
             source: './test/directives/html.js',
           },
+        ],
+      }
+    )).toMatchSnapshot();
+  });
+
+  it('handles directive paths', () => {
+    expect(transform(
+      '<html foo="bar">foo</html>',
+      {
+        directives: [
+          'test/directives/html.js',
         ],
       }
     )).toMatchSnapshot();
@@ -84,6 +98,21 @@ describe('babel-plugin-transform-jsx-directives', () => {
     expect(code).toMatchSnapshot();
   });
 
+  it('applies multiple directives loaded from one config', () => {
+    const code = transform(
+      `
+      <html action="test" />
+      `,
+      {
+        directives: [
+          './test/directives/multi.js',
+        ],
+      }
+    );
+
+    expect(code).toMatchSnapshot();
+  });
+
   it('converts jsx spread operators to object spread', () => {
     const code = transform(
       `
@@ -101,5 +130,17 @@ describe('babel-plugin-transform-jsx-directives', () => {
     );
 
     expect(code).toMatchSnapshot();
+  });
+
+  it('imports directive module', () => {
+    const code = transform('<changelog />', { directives: ['conventional-changelog'] });
+
+    expect(code).toMatchSnapshot();
+  });
+
+  it('throws when a directive can not be imported', () => {
+    expect(() => {
+      transform('<foo />', { directives: ['foo-module'] });
+    }).toThrow(errorMatching('Cannot find module'));
   });
 });
