@@ -22,7 +22,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
         const directives = getApplicableDirectives(
           t,
           path,
-          normalizeDirectives(state.opts)
+          normalizeDirectives(state.opts && state.opts.directives)
         );
 
         if (!directives.length) {
@@ -96,3 +96,5 @@ export default function babelPluginTransformJsxDirectives(babel) {
     },
   };
 }
+
+babelPluginTransformJsxDirectives.normalizeDirectives = normalizeDirectives;

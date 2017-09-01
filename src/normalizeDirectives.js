@@ -58,12 +58,12 @@ function addDefaults(directive) {
   }, directive);
 }
 
-export default function normalizeDirectives(opts) {
-  if (!opts.directives) {
+export default function normalizeDirectives(directives) {
+  if (!directives) {
     return [];
   }
 
-  return opts.directives.reduce((memo, someDirectives) => {
+  return directives.reduce((memo, someDirectives) => {
     return memo.concat(prepare(someDirectives).map(addDefaults));
   }, []).sort(({ priority }, { priority: otherPriority }) => {
     return priority - otherPriority;
