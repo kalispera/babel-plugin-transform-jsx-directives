@@ -42,6 +42,17 @@ describe('babel-plugin-transform-jsx-directives', () => {
     )).toMatchSnapshot();
   });
 
+  it('handles boolean props', () => {
+    expect(transform(
+      '<html foo>foo</html>',
+      {
+        directives: [
+          'test/directives/html.js',
+        ],
+      }
+    )).toMatchSnapshot();
+  });
+
   it('transforms an atrribute directive', () => {
     expect(transform(
       '<Button action={click} foo={bar}>baz</Button>',

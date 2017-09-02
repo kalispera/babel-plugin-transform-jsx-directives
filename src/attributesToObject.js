@@ -1,3 +1,14 @@
+
+function getAttributeValue(t, attribute) {
+  if (attribute.get('value').node === null) {
+    return t.booleanLiteral(true);
+  }
+
+  return t.isJSXExpressionContainer(attribute.get('value').node)
+    ? attribute.get('value.expression').node
+    : attribute.get('value').node;
+}
+
 export default function attributesToObject(t, attributes, directives) {
   const attributeDirectives = directives
     .filter(({ type }) => type === 'attribute')
@@ -16,9 +27,7 @@ export default function attributesToObject(t, attributes, directives) {
 
         return t.objectProperty(
           t.identifier(attribute.get('name.name').node),
-          t.isJSXExpressionContainer(attribute.get('value').node)
-            ? attribute.get('value.expression').node
-            : attribute.get('value').node
+          getAttributeValue(t, attribute)
         );
       })
   );

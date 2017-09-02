@@ -30,6 +30,13 @@ exports[`babel-plugin-transform-jsx-directives converts jsx spread operators to 
 }} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
+exports[`babel-plugin-transform-jsx-directives handles boolean props 1`] = `
+"import _htmlDirective from \\"./test/directives/htmlDirective.js\\";
+<_htmlDirective Elm=\\"html\\" props={{
+  foo: true
+}} next={(_Elm, _props) => <_Elm {..._props}>foo</_Elm>} />;"
+`;
+
 exports[`babel-plugin-transform-jsx-directives handles directive paths 1`] = `
 "import _htmlDirective from \\"./test/directives/htmlDirective.js\\";
 <_htmlDirective Elm=\\"html\\" props={{
