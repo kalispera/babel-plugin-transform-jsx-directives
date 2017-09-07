@@ -14,7 +14,7 @@ export default function getApplicableDirectives(babel, path, directives) {
   }).filter(a => a);
 
   return directives.reduce(
-    (memo, { name: directiveName, type, source }) => {
+    (memo, { name: directiveName, type, source, transformOptions }) => {
       const viaAttribute = type === 'attribute';
 
       if (
@@ -33,10 +33,14 @@ export default function getApplicableDirectives(babel, path, directives) {
         };
 
         if (viaAttribute) {
-          directive.options = path.get('attributes').find((attribute) => {
+          const options = path.get('attributes').find((attribute) => {
             return !t.isJSXSpreadAttribute(attribute.node) &&
               attribute.get('name.name').node === directiveName;
           }).get('value').node;
+
+          directive.options = transformOptions
+            ? transformOptions(babel, options)
+            : options;
         }
 
         memo.push(directive);

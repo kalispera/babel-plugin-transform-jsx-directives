@@ -154,4 +154,32 @@ describe('babel-plugin-transform-jsx-directives', () => {
       transform('<foo />', { directives: ['foo-module'] });
     }).toThrow(errorMatching('Cannot find module'));
   });
+
+  it('applies transformOptions', () => {
+    const code = transform(
+      `
+      <div foo="Bar" />
+      `,
+      {
+        directives: [
+          {
+            name: 'foo',
+            transformOptions({ types: t }, node) {
+              return t.jSXExpressionContainer(
+                t.objectExpression([
+                  t.objectProperty(
+                    t.identifier('value'),
+                    node
+                  ),
+                ])
+              );
+            },
+            source: 'foo.js',
+          },
+        ],
+      }
+    );
+
+    expect(code).toMatchSnapshot();
+  });
 });

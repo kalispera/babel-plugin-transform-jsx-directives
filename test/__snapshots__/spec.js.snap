@@ -22,6 +22,14 @@ import _actionDirective from \\"./test/directives/action.js\\";
 <_htmlDirective Elm=\\"html\\" props={{}} next={(_Elm2, _props2) => <_actionDirective Elm={_Elm2} props={_props2} options={woosa} next={(_Elm, _props) => <_Elm {..._props} />} />} />;"
 `;
 
+exports[`babel-plugin-transform-jsx-directives applies transformOptions 1`] = `
+"import _fooDirective from \\"foo.js\\";
+
+<_fooDirective Elm=\\"div\\" props={{}} options={{
+      value: \\"Bar\\"
+}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
 exports[`babel-plugin-transform-jsx-directives converts jsx spread operators to object spread 1`] = `
 "import _htmlDirective from \\"./test/directives/html.js\\";
 
