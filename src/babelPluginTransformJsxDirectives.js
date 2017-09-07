@@ -20,7 +20,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
     visitor: {
       JSXOpeningElement(path, state) {
         const directives = getApplicableDirectives(
-          t,
+          babel,
           path,
           normalizeDirectives(state.opts && state.opts.directives)
         );

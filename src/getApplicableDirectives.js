@@ -1,4 +1,6 @@
-export default function getApplicableDirectives(t, path, directives) {
+export default function getApplicableDirectives(babel, path, directives) {
+  const t = babel.types;
+
   if (!directives.length) {
     return [];
   }
