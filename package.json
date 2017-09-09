@@ -49,6 +49,7 @@
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-env": "1.6.0",
     "babel-preset-react": "6.24.1",
+    "codecov": "2.3.0",
     "condition-circle": "1.5.0",
     "eslint": "4.5.0",
     "eslint-config-airbnb-base": "11.3.1",
