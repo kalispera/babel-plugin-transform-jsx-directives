@@ -44,7 +44,9 @@ jobs:
       - restore_cache:
           keys:
           - v1-repo-{{ checksum ".circle-sha" }}
+      - run: $(npm bin)/greenkeeper-lockfile-update
       - run: npm test -- --coverage
+      - run: $(npm bin)/greenkeeper-lockfile-upload
       - save_cache:
           paths:
             - coverage
