@@ -47,8 +47,8 @@ jobs:
       - run: npm test -- --coverage
       - save_cache:
           paths:
-            - coverage
-          key: v1-coverage-{{ checksum ".circle-sha" }}
+            - ~/repo
+          key: v1-repo-{{ checksum ".circle-sha" }}
   codecov:
     docker:
       - image: circleci/node:8
@@ -60,7 +60,6 @@ jobs:
       - restore_cache:
           keys:
           - v1-repo-{{ checksum ".circle-sha" }}
-          - v1-coverage-{{ checksum ".circle-sha" }}
       - run: $(npm bin)/codecov
   deploy:
     docker:
