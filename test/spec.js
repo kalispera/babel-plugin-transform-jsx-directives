@@ -143,6 +143,29 @@ describe('babel-plugin-transform-jsx-directives', () => {
     expect(code).toMatchSnapshot();
   });
 
+  it('prevents mutation of child options by parent directives', () => {
+    const code = transform(
+      `
+      <html foo="bar" baz="qux" quux />
+      `,
+      {
+        directives: [
+          {
+            name: 'foo',
+            source: './test/directives/foo.js',
+            priority: 1,
+          },
+          {
+            name: 'baz',
+            source: './test/directives/baz.js',
+          },
+        ],
+      }
+    );
+
+    expect(code).toMatchSnapshot();
+  });
+
   it('imports directive module', () => {
     const code = transform('<changelog />', { directives: ['conventional-changelog'] });
 
