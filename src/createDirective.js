@@ -18,25 +18,19 @@ export default function createDirective(
   ];
 
   if (options) {
-    targetAttributes.push(
-      t.jSXAttribute(
-        t.jSXIdentifier('options'),
-        options
-      )
-    );
+    targetAttributes.push(t.jSXAttribute(
+      t.jSXIdentifier('options'),
+      options
+    ));
   }
 
-  targetAttributes.push(
-    t.jSXAttribute(
-      t.jSXIdentifier('next'),
-      t.jSXExpressionContainer(
-        t.arrowFunctionExpression(
-          [inner.Elm, inner.props],
-          inner.inner
-        )
-      )
-    )
-  );
+  targetAttributes.push(t.jSXAttribute(
+    t.jSXIdentifier('next'),
+    t.jSXExpressionContainer(t.arrowFunctionExpression(
+      [inner.Elm, inner.props],
+      inner.inner
+    ))
+  ));
 
   return t.jSXElement(
     t.jSXOpeningElement(

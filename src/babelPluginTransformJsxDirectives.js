@@ -34,7 +34,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
         const isComponent = name[0] === name[0].toUpperCase();
         const attributes = attributesToObject(t, path.get('attributes'), directives);
         const { Elm, props } = getUidIds(path);
-        const children = jsxElement.node.children;
+        const { node: { children } } = jsxElement;
 
         const { inner } = directives.reduce((
           memo,

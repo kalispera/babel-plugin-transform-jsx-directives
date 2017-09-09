@@ -188,14 +188,12 @@ describe('babel-plugin-transform-jsx-directives', () => {
           {
             name: 'foo',
             transformOptions({ types: t }, node) {
-              return t.jSXExpressionContainer(
-                t.objectExpression([
-                  t.objectProperty(
-                    t.identifier('value'),
-                    node
-                  ),
-                ])
-              );
+              return t.jSXExpressionContainer(t.objectExpression([
+                t.objectProperty(
+                  t.identifier('value'),
+                  node
+                ),
+              ]));
             },
             source: 'foo.js',
           },
