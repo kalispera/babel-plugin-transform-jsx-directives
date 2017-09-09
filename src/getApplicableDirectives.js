@@ -14,7 +14,15 @@ export default function getApplicableDirectives(babel, path, directives) {
   }).filter(a => a);
 
   return directives.reduce(
-    (memo, { name: directiveName, type, source, transformOptions }) => {
+    (
+      memo,
+      {
+        name: directiveName,
+        type,
+        source,
+        transformOptions,
+      }
+    ) => {
       const viaAttribute = type === 'attribute';
 
       if (
