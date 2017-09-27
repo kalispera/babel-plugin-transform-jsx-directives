@@ -55,7 +55,7 @@
     "eslint-config-airbnb-base": "12.0.0",
     "eslint-plugin-import": "2.7.0",
     "greenkeeper-lockfile": "1.9.0",
-    "jest": "21.2.0",
+    "jest": "21.2.1",
     "semantic-release": "7.0.2"
   },
   "dependencies": {
