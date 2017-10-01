@@ -53,7 +53,7 @@ exports[`babel-plugin-transform-jsx-directives handles directive paths 1`] = `
 `;
 
 exports[`babel-plugin-transform-jsx-directives imports directive module 1`] = `
-"import _changelogDirective from \\"conventional-changelog/conventionalChangelogDirective.js\\";
+"import _changelogDirective from \\"conventional-changelog-core/conventionalChangelogDirective.js\\";
 <_changelogDirective Elm=\\"changelog\\" props={{}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 

@@ -2,7 +2,7 @@ import * as babel from 'babel-core';
 import plugin from '../src/index';
 import errorMatching from './helpers/errorMatching';
 
-jest.mock('conventional-changelog');
+jest.mock('conventional-changelog-core');
 
 function transform(code, options = {}, presets = []) {
   return babel.transform(code, {
@@ -167,7 +167,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
   });
 
   it('imports directive module', () => {
-    const code = transform('<changelog />', { directives: ['conventional-changelog'] });
+    const code = transform('<changelog />', { directives: ['conventional-changelog-core'] });
 
     expect(code).toMatchSnapshot();
   });
