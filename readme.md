@@ -163,6 +163,10 @@ target library, like [context](https://facebook.github.io/react/docs/context.htm
   Directives can provide an [option transformer](#transform-options) in order to
   mutate own options beforehand.
 
+- `as`: JSX namespace of the directive attribute. _(Only available on attribute directives)_
+
+  Given this jsx `<div onClick:alert="Hello World!" />`, a `alert` attribute directive would
+  receive `"onClick"` as `as`.
 
 ## Transform Options
 
