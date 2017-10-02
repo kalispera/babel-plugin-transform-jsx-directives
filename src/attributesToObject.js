@@ -16,8 +16,15 @@ export default function attributesToObject(t, someAttributes, directives) {
 
   const attributes = someAttributes
     .filter((attribute) => {
-      return t.isJSXSpreadAttribute(attribute.node) ||
-        attributeDirectives.indexOf(attribute.get('name.name').node) === -1;
+      if (t.isJSXSpreadAttribute(attribute.node)) {
+        return true;
+      }
+
+      const name = t.isJSXNamespacedName(attribute.get('name'))
+        ? attribute.get('name.name.name').node
+        : attribute.get('name.name').node;
+
+      return attributeDirectives.indexOf(name) === -1;
     })
     .map((attribute) => {
       if (t.isJSXSpreadAttribute(attribute.node)) {

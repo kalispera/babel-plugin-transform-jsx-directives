@@ -7,7 +7,8 @@ export default function createDirective(
   Elm,
   props,
   options,
-  globalOptions
+  globalOptions,
+  as
 ) {
   const targetAttributes = [
     t.jSXAttribute(
@@ -24,6 +25,13 @@ export default function createDirective(
     targetAttributes.push(t.jSXAttribute(
       t.jSXIdentifier('options'),
       options
+    ));
+  }
+
+  if (as) {
+    targetAttributes.push(t.jSXAttribute(
+      t.jSXIdentifier('as'),
+      t.StringLiteral(as)
     ));
   }
 

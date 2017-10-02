@@ -10,7 +10,19 @@ export default function getApplicableDirectives(babel, path, directives) {
     if (t.isJSXSpreadAttribute(attribute.node)) {
       return null;
     }
-    return attribute.get('name.name').node;
+
+    if (t.isJSXNamespacedName(attribute.get('name'))) {
+      return {
+        name: attribute.get('name.name.name').node,
+        as: attribute.get('name.namespace.name').node,
+        value: attribute.get('value').node,
+      };
+    }
+
+    return {
+      name: attribute.get('name.name').node,
+      value: attribute.get('value').node,
+    };
   }).filter(a => a);
 
   return directives.reduce(
@@ -32,7 +44,7 @@ export default function getApplicableDirectives(babel, path, directives) {
           name === directiveName
         ) || (
           viaAttribute &&
-          attributes.indexOf(directiveName) !== -1
+          attributes.map(({ name: n }) => n).indexOf(directiveName) !== -1
         )
       ) {
         const directive = {
@@ -43,11 +55,9 @@ export default function getApplicableDirectives(babel, path, directives) {
         };
 
         if (viaAttribute) {
-          const options = path.get('attributes').find((attribute) => {
-            return !t.isJSXSpreadAttribute(attribute.node) &&
-              attribute.get('name.name').node === directiveName;
-          }).get('value').node;
+          const { value: options, as } = attributes.find(({ name: n }) => n === directiveName);
 
+          directive.as = as;
           directive.options = transformOptions
             ? transformOptions(babel, options)
             : options;

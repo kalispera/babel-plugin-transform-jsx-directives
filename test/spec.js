@@ -236,4 +236,15 @@ describe('babel-plugin-transform-jsx-directives', () => {
       transform('<foo />', { directives: [['conventional-changelog-core', { foo: true }, 'extra']] });
     }).toThrow(errorMatching('Unexpected directive declaration'));
   });
+
+  it('provides attribute namespace to directive', () => {
+    const code = transform(
+      `
+      <div bar:foo="baz" />
+      `,
+      { directives: [{ name: 'foo', source: 'foo.js' }] }
+    );
+
+    expect(code).toMatchSnapshot();
+  });
 });

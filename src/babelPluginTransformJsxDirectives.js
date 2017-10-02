@@ -40,6 +40,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
           memo,
           {
             name: directiveName,
+            as,
             source,
             options,
             globalOptions,
@@ -63,7 +64,8 @@ export default function babelPluginTransformJsxDirectives(babel) {
                 t.jSXExpressionContainer(newElm),
                 newProps,
                 options,
-                globalOptions
+                globalOptions,
+                as
               ),
               Elm: newElm,
               props: newProps,
@@ -80,7 +82,8 @@ export default function babelPluginTransformJsxDirectives(babel) {
                 : t.stringLiteral(name),
               attributes,
               options,
-              globalOptions
+              globalOptions,
+              as
             ),
           };
         }, {
