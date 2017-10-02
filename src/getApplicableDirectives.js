@@ -21,6 +21,7 @@ export default function getApplicableDirectives(babel, path, directives) {
         type,
         source,
         transformOptions,
+        globalOptions,
       }
     ) => {
       const viaAttribute = type === 'attribute';
@@ -36,6 +37,7 @@ export default function getApplicableDirectives(babel, path, directives) {
       ) {
         const directive = {
           name: directiveName,
+          globalOptions,
           type,
           source,
         };

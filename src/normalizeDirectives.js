@@ -46,17 +46,35 @@ function resolveSource(file, source) {
   return path.resolve(path.dirname(file), source);
 }
 
-function prepare(someDirectives) {
-  if (typeof someDirectives === 'string') {
-    const { file, directives } = load(someDirectives);
+function getGlobalOptions(directive) {
+  if (Array.isArray(directive)) {
+    if (directive.length > 2) {
+      throw new Error(`Unexpected directive declaration ${JSON.stringify(directive)}`);
+    }
+
+    return {
+      directive: directive[0],
+      globalOptions: directive[1],
+    };
+  }
+
+  return { directive };
+}
+
+function prepare(directiveWithOptions) {
+  const { directive: someDirective, globalOptions } = getGlobalOptions(directiveWithOptions);
+
+  if (typeof someDirective === 'string') {
+    const { file, directives } = load(someDirective);
     return toArray(directives).map((directive) => {
       return Object.assign({}, directive, {
         source: resolveSource(file, directive.source),
+        globalOptions,
       });
     });
   }
 
-  return toArray(someDirectives);
+  return [Object.assign({}, { globalOptions }, someDirective)];
 }
 
 function addDefaults(directive) {
@@ -71,8 +89,8 @@ export default function normalizeDirectives(directives) {
     return [];
   }
 
-  return directives.reduce((memo, someDirectives) => {
-    return memo.concat(prepare(someDirectives).map(addDefaults));
+  return directives.reduce((memo, directive) => {
+    return memo.concat(prepare(directive).map(addDefaults));
   }, []).sort(({ priority }, { priority: otherPriority }) => {
     return priority - otherPriority;
   });

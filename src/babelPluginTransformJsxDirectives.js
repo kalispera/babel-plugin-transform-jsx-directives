@@ -38,7 +38,12 @@ export default function babelPluginTransformJsxDirectives(babel) {
 
         const { inner } = directives.reduce((
           memo,
-          { name: directiveName, source, options },
+          {
+            name: directiveName,
+            source,
+            options,
+            globalOptions,
+          },
           i
         ) => {
           const localName = importDirective(babel, path, directiveName, source);
@@ -57,7 +62,8 @@ export default function babelPluginTransformJsxDirectives(babel) {
                 memo,
                 t.jSXExpressionContainer(newElm),
                 newProps,
-                options
+                options,
+                globalOptions
               ),
               Elm: newElm,
               props: newProps,
@@ -73,7 +79,8 @@ export default function babelPluginTransformJsxDirectives(babel) {
                 ? t.jSXExpressionContainer(t.identifier(name))
                 : t.stringLiteral(name),
               attributes,
-              options
+              options,
+              globalOptions
             ),
           };
         }, {

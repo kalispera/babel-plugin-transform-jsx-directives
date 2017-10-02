@@ -1,10 +1,13 @@
+import template from 'babel-template';
+
 export default function createDirective(
   t,
   directiveName,
   inner,
   Elm,
   props,
-  options
+  options,
+  globalOptions
 ) {
   const targetAttributes = [
     t.jSXAttribute(
@@ -21,6 +24,16 @@ export default function createDirective(
     targetAttributes.push(t.jSXAttribute(
       t.jSXIdentifier('options'),
       options
+    ));
+  }
+
+  if (globalOptions) {
+    const buildGlobalOptionsNode = template(`var x = ${JSON.stringify(globalOptions)};`);
+    const globalOptionsNode = buildGlobalOptionsNode().declarations[0].init;
+
+    targetAttributes.push(t.jSXAttribute(
+      t.jSXIdentifier('globalOptions'),
+      t.JSXExpressionContainer(globalOptionsNode)
     ));
   }
 

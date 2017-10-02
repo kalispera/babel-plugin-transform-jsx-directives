@@ -66,6 +66,21 @@ import _bazDirective from \\"./test/directives/baz.js\\";
 }} options=\\"bar\\" next={(_Elm2, _props2) => <_bazDirective Elm={_Elm2} props={_props2} options=\\"qux\\" next={(_Elm, _props) => <_Elm {..._props} />} />} />;"
 `;
 
+exports[`babel-plugin-transform-jsx-directives provides global options to directive 1`] = `
+"import _fooDirective from \\"foo.js\\";
+
+<_fooDirective Elm=\\"div\\" props={{}} options=\\"Bar\\" globalOptions={{
+      \\"baz\\": \\"qux\\"
+}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
+exports[`babel-plugin-transform-jsx-directives provides global options to directive imported from string 1`] = `
+"import _changelogDirective from \\"conventional-changelog-core/conventionalChangelogDirective.js\\";
+<_changelogDirective Elm=\\"changelog\\" props={{}} globalOptions={{
+  \\"foo\\": true
+}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
 exports[`babel-plugin-transform-jsx-directives transforms an atrribute directive 1`] = `
 "import _actionDirective from \\"./test/directives/action.js\\";
 <_actionDirective Elm={Button} props={{

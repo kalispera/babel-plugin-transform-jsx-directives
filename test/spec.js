@@ -203,4 +203,37 @@ describe('babel-plugin-transform-jsx-directives', () => {
 
     expect(code).toMatchSnapshot();
   });
+
+  it('provides global options to directive', () => {
+    const code = transform(
+      `
+      <div foo="Bar" />
+      `,
+      {
+        directives: [
+          {
+            name: 'foo',
+            source: 'foo.js',
+            globalOptions: {
+              baz: 'qux',
+            },
+          },
+        ],
+      }
+    );
+
+    expect(code).toMatchSnapshot();
+  });
+
+  it('provides global options to directive imported from string', () => {
+    const code = transform('<changelog />', { directives: [['conventional-changelog-core', { foo: true }]] });
+
+    expect(code).toMatchSnapshot();
+  });
+
+  it('throws when directive declaration has more than two entries', () => {
+    expect(() => {
+      transform('<foo />', { directives: [['conventional-changelog-core', { foo: true }, 'extra']] });
+    }).toThrow(errorMatching('Unexpected directive declaration'));
+  });
 });

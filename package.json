@@ -64,6 +64,7 @@
     "semantic-release": "8.0.3"
   },
   "dependencies": {
-    "babel-plugin-syntax-jsx": "^6.18.0"
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-template": "6.26.0"
   }
 }
