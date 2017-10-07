@@ -18,7 +18,29 @@ export default function babelPluginTransformJsxDirectives(babel) {
   return {
     inherits: jsxSyntax,
     visitor: {
+      JSXNamespacedName(path, state) {
+        const openingElement = path.parentPath.parentPath;
+
+        if (!t.isJSXOpeningElement(openingElement)) {
+          return;
+        }
+
+        const directives = getApplicableDirectives(
+          babel,
+          openingElement,
+          normalizeDirectives(state.opts && state.opts.directives)
+        );
+        const name = path.get('name.name').node;
+
+        if (directives.filter(directive => directive.name === name).length) {
+          path.skip();
+        }
+      },
       JSXOpeningElement(path, state) {
+        if (t.isJSXNamespacedName(path.get('name'))) {
+          return;
+        }
+
         const directives = getApplicableDirectives(
           babel,
           path,

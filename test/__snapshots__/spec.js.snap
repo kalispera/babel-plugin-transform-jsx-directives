@@ -57,6 +57,17 @@ exports[`babel-plugin-transform-jsx-directives imports directive module 1`] = `
 <_changelogDirective Elm=\\"changelog\\" props={{}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
+exports[`babel-plugin-transform-jsx-directives namespaced/alias directives ignores namespaced elements 1`] = `
+"
+<div:foo bar:foo=\\"baz\\" />;"
+`;
+
+exports[`babel-plugin-transform-jsx-directives namespaced/alias directives provides attribute namespace to directive 1`] = `
+"import _fooDirective from \\"foo.js\\";
+
+<_fooDirective Elm=\\"div\\" props={{}} options=\\"baz\\" as=\\"bar\\" next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
 exports[`babel-plugin-transform-jsx-directives prevents mutation of child options by parent directives 1`] = `
 "import _fooDirective from \\"./test/directives/foo.js\\";
 import _bazDirective from \\"./test/directives/baz.js\\";
@@ -64,12 +75,6 @@ import _bazDirective from \\"./test/directives/baz.js\\";
 <_fooDirective Elm=\\"html\\" props={{
       quux: true
 }} options=\\"bar\\" next={(_Elm2, _props2) => <_bazDirective Elm={_Elm2} props={_props2} options=\\"qux\\" next={(_Elm, _props) => <_Elm {..._props} />} />} />;"
-`;
-
-exports[`babel-plugin-transform-jsx-directives provides attribute namespace to directive 1`] = `
-"import _fooDirective from \\"foo.js\\";
-
-<_fooDirective Elm=\\"div\\" props={{}} options=\\"baz\\" as=\\"bar\\" next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
 exports[`babel-plugin-transform-jsx-directives provides global options to directive 1`] = `

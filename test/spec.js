@@ -237,14 +237,51 @@ describe('babel-plugin-transform-jsx-directives', () => {
     }).toThrow(errorMatching('Unexpected directive declaration'));
   });
 
-  it('provides attribute namespace to directive', () => {
-    const code = transform(
-      `
-      <div bar:foo="baz" />
-      `,
-      { directives: [{ name: 'foo', source: 'foo.js' }] }
-    );
+  describe('namespaced/alias directives', () => {
+    it('provides attribute namespace to directive', () => {
+      const code = transform(
+        `
+        <div bar:foo="baz" />
+        `,
+        { directives: [{ name: 'foo', source: 'foo.js' }] }
+      );
 
-    expect(code).toMatchSnapshot();
+      expect(code).toMatchSnapshot();
+    });
+
+    it('does not fail when used with react', () => {
+      expect(() => {
+        transform(
+          `
+          <div bar:foo="baz" />
+          `,
+          { directives: [{ name: 'foo', source: 'foo.js' }] },
+          ['react']
+        );
+      }).not.toThrowError();
+    });
+
+    it('fails on non-directive namespaced with react', () => {
+      expect(() => {
+        transform(
+          `
+          <div bar:baz="baz" />
+          `,
+          { directives: [{ name: 'foo', source: 'foo.js' }] },
+          ['react']
+        );
+      }).toThrowError(errorMatching('ReactJSX is not XML'));
+    });
+
+    it('ignores namespaced elements', () => {
+      const code = transform(
+        `
+        <div:foo bar:foo="baz" />
+        `,
+        { directives: [{ name: 'foo', source: 'foo.js' }] }
+      );
+
+      expect(code).toMatchSnapshot();
+    });
   });
 });
