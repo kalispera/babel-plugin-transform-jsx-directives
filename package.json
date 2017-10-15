@@ -61,7 +61,7 @@
     "eslint-plugin-import": "2.7.0",
     "greenkeeper-lockfile": "1.9.0",
     "jest": "21.2.1",
-    "semantic-release": "8.0.3"
+    "semantic-release": "8.2.0"
   },
   "dependencies": {
     "babel-plugin-syntax-jsx": "^6.18.0",
