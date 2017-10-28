@@ -32,6 +32,7 @@ export default function getApplicableDirectives(babel, path, directives) {
         name: directiveName,
         type,
         source,
+        bootstrap,
         transformOptions,
         globalOptions,
       }
@@ -50,6 +51,7 @@ export default function getApplicableDirectives(babel, path, directives) {
         const directive = {
           name: directiveName,
           globalOptions,
+          bootstrap,
           type,
           source,
         };

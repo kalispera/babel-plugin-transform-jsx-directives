@@ -64,12 +64,20 @@ export default function babelPluginTransformJsxDirectives(babel) {
             name: directiveName,
             as,
             source,
+            bootstrap,
             options,
             globalOptions,
           },
           i
         ) => {
-          const localName = importDirective(babel, path, directiveName, source);
+          const localName = importDirective(
+            babel,
+            path,
+            directiveName,
+            source,
+            bootstrap,
+            globalOptions
+          );
 
           const isOuter = i === directives.length - 1;
           if (!isOuter) {

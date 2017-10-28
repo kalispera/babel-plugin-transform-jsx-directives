@@ -284,4 +284,21 @@ describe('babel-plugin-transform-jsx-directives', () => {
       expect(code).toMatchSnapshot();
     });
   });
+
+  describe('bootstrap', () => {
+    it('bootstrap directives', () => {
+      const code = transform(
+        `
+        <div bootstrap="baz" />
+        `,
+        {
+          directives: [
+            [{ name: 'bootstrap', source: 'bootstrap.js', bootstrap: { foo: 'bar' } }],
+          ],
+        }
+      );
+
+      expect(code).toMatchSnapshot();
+    });
+  });
 });

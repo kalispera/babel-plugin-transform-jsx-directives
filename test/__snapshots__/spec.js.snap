@@ -30,6 +30,20 @@ exports[`babel-plugin-transform-jsx-directives applies transformOptions 1`] = `
 }} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
+exports[`babel-plugin-transform-jsx-directives bootstrap bootstrap directives 1`] = `
+"import _bootstrapDirective, { bootstrap as _bootstrapBootstrap } from \\"bootstrap.js\\";
+
+if (!_bootstrapBootstrap.__called) {
+        _bootstrapBootstrap.__called = true;
+
+        _bootstrapBootstrap({
+                \\"foo\\": \\"bar\\"
+        });
+}
+
+<_bootstrapDirective Elm=\\"div\\" props={{}} options=\\"baz\\" next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
 exports[`babel-plugin-transform-jsx-directives converts jsx spread operators to object spread 1`] = `
 "import _htmlDirective from \\"./test/directives/html.js\\";
 
