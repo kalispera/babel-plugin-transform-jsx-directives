@@ -27,7 +27,7 @@ Add in your `.babelrc`
           "name": "button",
           "priority": 100,
           "source": "./myButtonDirective.js",
-          "globalOptions": {
+          "bootstrap": {
             "colour": "fuchsia"
           }
         },
@@ -54,7 +54,9 @@ _* Not really mandatory, but this plugin wont do nothing without specific config
  - `type` ("attribute"|"element"): whether the directive should be applied
    on matches against element names or attribute names. Default: "attribute"
  - `priority` (Integer): Directives with a higher priority run first, Default: 0
- - `globalOptions` (any): Additional options that are provided to directives
+ - `bootstrap` (any): If present, a `bootstrap` function will be exported
+   from `source` and called once when the application starts with any value
+   provided to `bootstrap`.
  - `transformOptions` (Function): Only for attribute directives. Optional transformer
    for the options node. See [Transform Options](#transform-options)
 
@@ -145,10 +147,6 @@ target library, like [context](https://facebook.github.io/react/docs/context.htm
 
   A directive can also decide to not call `next` at all and prevent creation
   of all child components.
-
-- `globalOptions`: Globally provided directive options
-
-  see [Directive Configuration](#directive-configuration).
 
 - `options`: Value of the directive attribute. _(Only available on attribute directives)_
 
