@@ -54,9 +54,10 @@ _* Not really mandatory, but this plugin wont do nothing without specific config
  - `type` ("attribute"|"element"): whether the directive should be applied
    on matches against element names or attribute names. Default: "attribute"
  - `priority` (Integer): Directives with a higher priority run first, Default: 0
- - `bootstrap` (any): If present, a `bootstrap` function will be exported
-   from `source` and called once when the application starts with any value
-   provided to `bootstrap`.
+ - `bootstrap` (any): If present, a `bootstrap` function is imported
+   from `source` and called a single time when the application starts with any value
+   provided to `bootstrap`. The value is being JSON encoded, in order to be moved
+   from config to runtime, so methods will get lost.
  - `transformOptions` (Function): Only for attribute directives. Optional transformer
    for the options node. See [Transform Options](#transform-options)
 
