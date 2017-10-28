@@ -1,5 +1,3 @@
-import template from 'babel-template';
-
 export default function createDirective(
   t,
   directiveName,
@@ -7,7 +5,6 @@ export default function createDirective(
   Elm,
   props,
   options,
-  globalOptions,
   as
 ) {
   const targetAttributes = [
@@ -32,16 +29,6 @@ export default function createDirective(
     targetAttributes.push(t.jSXAttribute(
       t.jSXIdentifier('as'),
       t.StringLiteral(as)
-    ));
-  }
-
-  if (globalOptions) {
-    const buildGlobalOptionsNode = template(`var x = ${JSON.stringify(globalOptions)};`);
-    const globalOptionsNode = buildGlobalOptionsNode().declarations[0].init;
-
-    targetAttributes.push(t.jSXAttribute(
-      t.jSXIdentifier('globalOptions'),
-      t.JSXExpressionContainer(globalOptionsNode)
     ));
   }
 

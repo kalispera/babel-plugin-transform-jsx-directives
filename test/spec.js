@@ -204,33 +204,6 @@ describe('babel-plugin-transform-jsx-directives', () => {
     expect(code).toMatchSnapshot();
   });
 
-  it('provides global options to directive', () => {
-    const code = transform(
-      `
-      <div foo="Bar" />
-      `,
-      {
-        directives: [
-          {
-            name: 'foo',
-            source: 'foo.js',
-            globalOptions: {
-              baz: 'qux',
-            },
-          },
-        ],
-      }
-    );
-
-    expect(code).toMatchSnapshot();
-  });
-
-  it('provides global options to directive imported from string', () => {
-    const code = transform('<changelog />', { directives: [['conventional-changelog-core', { foo: true }]] });
-
-    expect(code).toMatchSnapshot();
-  });
-
   it('throws when directive declaration has more than two entries', () => {
     expect(() => {
       transform('<foo />', { directives: [['conventional-changelog-core', { foo: true }, 'extra']] });
@@ -286,14 +259,29 @@ describe('babel-plugin-transform-jsx-directives', () => {
   });
 
   describe('bootstrap', () => {
-    it('bootstrap directives', () => {
+    it('bootstraps directives', () => {
       const code = transform(
         `
         <div bootstrap="baz" />
         `,
         {
           directives: [
-            [{ name: 'bootstrap', source: 'bootstrap.js', bootstrap: { foo: 'bar' } }],
+            { name: 'bootstrap', source: 'bootstrap.js', bootstrap: { foo: 'bar' } },
+          ],
+        }
+      );
+
+      expect(code).toMatchSnapshot();
+    });
+
+    it('bootstraps directives imported by string', () => {
+      const code = transform(
+        `
+        <html />
+        `,
+        {
+          directives: [
+            ['test/directives/html.js', false],
           ],
         }
       );

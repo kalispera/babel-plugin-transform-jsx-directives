@@ -30,7 +30,7 @@ exports[`babel-plugin-transform-jsx-directives applies transformOptions 1`] = `
 }} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
-exports[`babel-plugin-transform-jsx-directives bootstrap bootstrap directives 1`] = `
+exports[`babel-plugin-transform-jsx-directives bootstrap bootstraps directives 1`] = `
 "import _bootstrapDirective, { bootstrap as _bootstrapBootstrap } from \\"bootstrap.js\\";
 
 if (!_bootstrapBootstrap.__called) {
@@ -42,6 +42,18 @@ if (!_bootstrapBootstrap.__called) {
 }
 
 <_bootstrapDirective Elm=\\"div\\" props={{}} options=\\"baz\\" next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
+exports[`babel-plugin-transform-jsx-directives bootstrap bootstraps directives imported by string 1`] = `
+"import _htmlDirective, { bootstrap as _htmlBootstrap } from \\"./test/directives/htmlDirective.js\\";
+
+if (!_htmlBootstrap.__called) {
+        _htmlBootstrap.__called = true;
+
+        _htmlBootstrap(false);
+}
+
+<_htmlDirective Elm=\\"html\\" props={{}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
 exports[`babel-plugin-transform-jsx-directives converts jsx spread operators to object spread 1`] = `
@@ -89,21 +101,6 @@ import _bazDirective from \\"./test/directives/baz.js\\";
 <_fooDirective Elm=\\"html\\" props={{
       quux: true
 }} options=\\"bar\\" next={(_Elm2, _props2) => <_bazDirective Elm={_Elm2} props={_props2} options=\\"qux\\" next={(_Elm, _props) => <_Elm {..._props} />} />} />;"
-`;
-
-exports[`babel-plugin-transform-jsx-directives provides global options to directive 1`] = `
-"import _fooDirective from \\"foo.js\\";
-
-<_fooDirective Elm=\\"div\\" props={{}} options=\\"Bar\\" globalOptions={{
-      \\"baz\\": \\"qux\\"
-}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
-`;
-
-exports[`babel-plugin-transform-jsx-directives provides global options to directive imported from string 1`] = `
-"import _changelogDirective from \\"conventional-changelog-core/conventionalChangelogDirective.js\\";
-<_changelogDirective Elm=\\"changelog\\" props={{}} globalOptions={{
-  \\"foo\\": true
-}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
 exports[`babel-plugin-transform-jsx-directives transforms an atrribute directive 1`] = `

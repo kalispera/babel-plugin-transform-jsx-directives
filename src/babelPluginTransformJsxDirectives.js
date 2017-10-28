@@ -66,7 +66,6 @@ export default function babelPluginTransformJsxDirectives(babel) {
             source,
             bootstrap,
             options,
-            globalOptions,
           },
           i
         ) => {
@@ -75,8 +74,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
             path,
             directiveName,
             source,
-            bootstrap,
-            globalOptions
+            bootstrap
           );
 
           const isOuter = i === directives.length - 1;
@@ -94,7 +92,6 @@ export default function babelPluginTransformJsxDirectives(babel) {
                 t.jSXExpressionContainer(newElm),
                 newProps,
                 options,
-                globalOptions,
                 as
               ),
               Elm: newElm,
@@ -112,7 +109,6 @@ export default function babelPluginTransformJsxDirectives(babel) {
                 : t.stringLiteral(name),
               attributes,
               options,
-              globalOptions,
               as
             ),
           };

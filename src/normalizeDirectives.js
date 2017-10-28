@@ -46,7 +46,7 @@ function resolveSource(file, source) {
   return path.resolve(path.dirname(file), source);
 }
 
-function getGlobalOptions(directive) {
+function getBootstrapOptions(directive) {
   if (Array.isArray(directive)) {
     if (directive.length > 2) {
       throw new Error(`Unexpected directive declaration ${JSON.stringify(directive)}`);
@@ -54,7 +54,7 @@ function getGlobalOptions(directive) {
 
     return {
       directive: directive[0],
-      globalOptions: directive[1],
+      bootstrap: directive[1],
     };
   }
 
@@ -62,19 +62,18 @@ function getGlobalOptions(directive) {
 }
 
 function prepare(directiveWithOptions) {
-  const { directive: someDirective, globalOptions } = getGlobalOptions(directiveWithOptions);
+  const { directive: someDirective, bootstrap } = getBootstrapOptions(directiveWithOptions);
 
   if (typeof someDirective === 'string') {
     const { file, directives } = load(someDirective);
     return toArray(directives).map((directive) => {
-      return Object.assign({}, directive, {
+      return Object.assign({ bootstrap }, directive, {
         source: resolveSource(file, directive.source),
-        globalOptions,
       });
     });
   }
 
-  return [Object.assign({}, { globalOptions }, someDirective)];
+  return [Object.assign({}, { bootstrap }, someDirective)];
 }
 
 function addDefaults(directive) {
