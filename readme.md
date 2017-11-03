@@ -50,7 +50,9 @@ _* Not really mandatory, but this plugin wont do nothing without specific config
 
  - `name` (String): When a element or attribute (see type) matches the name,
    the directive gets applied
- - `source` (String): path to the directive runtime component
+ - `source` (String|Function): path to the directive runtime component or
+   function returning the path. Function gets called with transformed options
+   and bootstrap.
  - `type` ("attribute"|"element"): whether the directive should be applied
    on matches against element names or attribute names. Default: "attribute"
  - `priority` (Integer): Directives with a higher priority run first, Default: 0
