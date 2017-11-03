@@ -1,4 +1,5 @@
 import getRootPath from './getRootPath';
+import IS_DIRECTIVE_IMPORT from './IS_DIRECTIVE_IMPORT';
 
 export default function getImport({ types: t }, path, directiveName, directiveSource, bootstrap) {
   const rootPath = getRootPath(path);
@@ -34,6 +35,10 @@ export default function getImport({ types: t }, path, directiveName, directiveSo
 
   rootPath.unshiftContainer('body', newImport);
 
-  return rootPath.get('body.0');
+  const importPath = rootPath.get('body.0');
+
+  importPath.hub[IS_DIRECTIVE_IMPORT] = true;
+
+  return importPath;
 }
 

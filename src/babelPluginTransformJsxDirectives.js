@@ -4,6 +4,7 @@ import importDirective from './importDirective';
 import createDirective from './createDirective';
 import attributesToObject from './attributesToObject';
 import getApplicableDirectives from './getApplicableDirectives';
+import IS_DIRECTIVE_IMPORT from './IS_DIRECTIVE_IMPORT';
 
 function getUidIds(path) {
   return {
@@ -137,3 +138,4 @@ export default function babelPluginTransformJsxDirectives(babel) {
 }
 
 babelPluginTransformJsxDirectives.normalizeDirectives = normalizeDirectives;
+babelPluginTransformJsxDirectives.IS_DIRECTIVE_IMPORT = IS_DIRECTIVE_IMPORT;
