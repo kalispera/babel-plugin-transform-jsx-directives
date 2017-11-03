@@ -74,7 +74,8 @@ export default function babelPluginTransformJsxDirectives(babel) {
             path,
             directiveName,
             source,
-            bootstrap
+            bootstrap,
+            options
           );
 
           const isOuter = i === directives.length - 1;

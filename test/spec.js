@@ -289,4 +289,66 @@ describe('babel-plugin-transform-jsx-directives', () => {
       expect(code).toMatchSnapshot();
     });
   });
+
+  describe('with dynamic source', () => {
+    it('uses getter function for the source', () => {
+      const sourceGetter = jest.fn(() => {
+        return 'foo.js';
+      });
+
+      const code = transform(
+        `
+        <html foo />
+        `,
+        {
+          directives: [
+            {
+              name: 'foo',
+              source: sourceGetter,
+            },
+          ],
+        }
+      );
+
+      expect(sourceGetter).toHaveBeenCalledTimes(1);
+      expect(code).toMatchSnapshot();
+    });
+
+    it('passes transformed options and bootstrap to getter function', () => {
+      const sourceGetter = jest.fn(() => {
+        return 'barRuntime.js';
+      });
+
+      const bootstrap = { baz: 'qux' };
+      const code = transform(
+        `
+        <html foo="bar" />
+        `,
+        {
+          directives: [
+            {
+              name: 'foo',
+              transformOptions({ types: t }, node) {
+                return t.jSXExpressionContainer(t.objectExpression([
+                  t.objectProperty(
+                    t.identifier('value'),
+                    node
+                  ),
+                ]));
+              },
+              bootstrap,
+              source: sourceGetter,
+            },
+          ],
+        }
+      );
+
+      expect(sourceGetter).toHaveBeenCalledTimes(1);
+      const props = sourceGetter.mock.calls[0][0].expression.properties;
+      expect(props[0].key).toEqual(expect.objectContaining({ name: 'value' }));
+      expect(props[0].value).toEqual(expect.objectContaining({ value: 'bar' }));
+      expect(sourceGetter.mock.calls[0][1]).toEqual(bootstrap);
+      expect(code).toMatchSnapshot();
+    });
+  });
 });

@@ -118,3 +118,25 @@ exports[`babel-plugin-transform-jsx-directives transforms an element directive 1
 `;
 
 exports[`babel-plugin-transform-jsx-directives understands jsx 1`] = `"<foo />;"`;
+
+exports[`babel-plugin-transform-jsx-directives with dynamic source passes transformed options and bootstrap to getter function 1`] = `
+"import _fooDirective, { bootstrap as _fooBootstrap } from \\"barRuntime.js\\";
+
+if (!_fooBootstrap.__called) {
+        _fooBootstrap.__called = true;
+
+        _fooBootstrap({
+                \\"baz\\": \\"qux\\"
+        });
+}
+
+<_fooDirective Elm=\\"html\\" props={{}} options={{
+        value: \\"bar\\"
+}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;
+
+exports[`babel-plugin-transform-jsx-directives with dynamic source uses getter function for the source 1`] = `
+"import _fooDirective from \\"foo.js\\";
+
+<_fooDirective Elm=\\"html\\" props={{}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
+`;

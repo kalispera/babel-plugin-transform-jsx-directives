@@ -5,9 +5,14 @@ export default function importDirective(
   babel,
   path,
   directiveName,
-  directiveSource,
-  bootstrap
+  someDirectiveSource,
+  bootstrap,
+  options
 ) {
+  const directiveSource = typeof someDirectiveSource === 'function'
+    ? someDirectiveSource(options, bootstrap)
+    : someDirectiveSource;
+
   const someImport = getImport(babel, path, directiveName, directiveSource, bootstrap);
 
   if (bootstrap != null) {
