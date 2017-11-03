@@ -34,6 +34,7 @@ export default function getApplicableDirectives(babel, path, directives) {
         source,
         bootstrap,
         transformOptions,
+        basePath,
       }
     ) => {
       const viaAttribute = type === 'attribute';
@@ -52,6 +53,7 @@ export default function getApplicableDirectives(babel, path, directives) {
           bootstrap,
           type,
           source,
+          basePath,
         };
 
         if (viaAttribute) {

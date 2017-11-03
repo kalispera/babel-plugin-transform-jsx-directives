@@ -24,28 +24,6 @@ function load(directives, original = false) {
   }
 }
 
-function isNodeModule(file) {
-  try {
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    require(`${file}/package.json`);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function resolveSource(file, source) {
-  if (source.indexOf('.') !== 0) {
-    return source;
-  }
-
-  if (isNodeModule(file)) {
-    return path.join(file, source);
-  }
-
-  return path.resolve(path.dirname(file), source);
-}
-
 function getBootstrapOptions(directive) {
   if (Array.isArray(directive)) {
     if (directive.length > 2) {
@@ -68,7 +46,7 @@ function prepare(directiveWithOptions) {
     const { file, directives } = load(someDirective);
     return toArray(directives).map((directive) => {
       return Object.assign({ bootstrap }, directive, {
-        source: resolveSource(file, directive.source),
+        basePath: file,
       });
     });
   }

@@ -1,5 +1,6 @@
 import getImport from './getImport';
 import insertBootstrap from './insertBootstrap';
+import resolveSource from './resolveSource';
 
 export default function importDirective(
   babel,
@@ -7,13 +8,18 @@ export default function importDirective(
   directiveName,
   someDirectiveSource,
   bootstrap,
-  options
+  options,
+  basePath
 ) {
   const directiveSource = typeof someDirectiveSource === 'function'
     ? someDirectiveSource(options, bootstrap)
     : someDirectiveSource;
 
-  const someImport = getImport(babel, path, directiveName, directiveSource, bootstrap);
+  const resolvedSource = basePath
+    ? resolveSource(basePath, directiveSource)
+    : directiveSource;
+
+  const someImport = getImport(babel, path, directiveName, resolvedSource, bootstrap);
 
   if (bootstrap != null) {
     insertBootstrap(babel, someImport, bootstrap);
