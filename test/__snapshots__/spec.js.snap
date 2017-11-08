@@ -83,6 +83,12 @@ exports[`babel-plugin-transform-jsx-directives imports directive module 1`] = `
 <_changelogDirective Elm=\\"changelog\\" props={{}} next={(_Elm, _props) => <_Elm {..._props} />} />;"
 `;
 
+exports[`babel-plugin-transform-jsx-directives namespaced/alias directives applies same directive with different namespaces 1`] = `
+"import _fooDirective from \\"foo.js\\";
+
+<_fooDirective Elm=\\"div\\" props={{}} options=\\"quux\\" as=\\"qux\\" next={(_Elm2, _props2) => <_fooDirective Elm={_Elm2} props={_props2} options=\\"baz\\" as=\\"bar\\" next={(_Elm, _props) => <_Elm {..._props} />} />} />;"
+`;
+
 exports[`babel-plugin-transform-jsx-directives namespaced/alias directives ignores namespaced elements 1`] = `
 "
 <div:foo bar:foo=\\"baz\\" />;"

@@ -5,7 +5,7 @@ export default function getApplicableDirectives(babel, path, directives) {
     return [];
   }
 
-  const name = path.get('name.name').node;
+  const elementName = path.get('name.name').node;
   const attributes = path.get('attributes').map((attribute) => {
     if (t.isJSXSpreadAttribute(attribute.node)) {
       return null;
@@ -25,51 +25,23 @@ export default function getApplicableDirectives(babel, path, directives) {
     };
   }).filter(a => a);
 
-  return directives.reduce(
-    (
-      memo,
-      {
-        name: directiveName,
-        type,
-        source,
-        bootstrap,
-        transformOptions,
-        basePath,
-      }
-    ) => {
-      const viaAttribute = type === 'attribute';
+  return directives.reduce((memo, directive) => {
+    if (directive.type === 'element' && elementName === directive.name) {
+      memo.push(directive);
+    } else if (directive.type === 'attribute') {
+      attributes
+        .filter(({ name }) => directive.name === name)
+        .forEach((attribute) => {
+          memo.push(Object.assign({}, directive, {
+            transformOptions: null,
+            as: attribute.as,
+            options: directive.transformOptions
+              ? directive.transformOptions(babel, attribute.value)
+              : attribute.value,
+          }));
+        });
+    }
 
-      if (
-        (
-          type === 'element' &&
-          name === directiveName
-        ) || (
-          viaAttribute &&
-          attributes.map(({ name: n }) => n).indexOf(directiveName) !== -1
-        )
-      ) {
-        const directive = {
-          name: directiveName,
-          bootstrap,
-          type,
-          source,
-          basePath,
-        };
-
-        if (viaAttribute) {
-          const { value: options, as } = attributes.find(({ name: n }) => n === directiveName);
-
-          directive.as = as;
-          directive.options = transformOptions
-            ? transformOptions(babel, options)
-            : options;
-        }
-
-        memo.push(directive);
-      }
-
-      return memo;
-    },
-    []
-  );
+    return memo;
+  }, []);
 }

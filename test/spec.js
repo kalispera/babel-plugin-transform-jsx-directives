@@ -256,6 +256,17 @@ describe('babel-plugin-transform-jsx-directives', () => {
 
       expect(code).toMatchSnapshot();
     });
+
+    it('applies same directive with different namespaces', () => {
+      const code = transform(
+        `
+        <div bar:foo="baz" qux:foo="quux" />
+        `,
+        { directives: [{ name: 'foo', source: 'foo.js' }] }
+      );
+
+      expect(code).toMatchSnapshot();
+    });
   });
 
   describe('bootstrap', () => {
