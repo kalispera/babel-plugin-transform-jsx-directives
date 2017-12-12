@@ -1,27 +1,28 @@
 {
   "name": "babel-plugin-transform-jsx-directives",
   "version": "0.0.0-development",
-  "description":
-    "apply directives to jsx components based on component names or props",
+  "description": "apply directives to jsx components based on component names or props",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
     "build": "rm -rf lib && babel src -d lib",
-    "semantic-release":
-      "semantic-release pre && npm run build && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url":
-      "https://github.com/kalispera/babel-plugin-transform-jsx-directives.git"
+    "url": "https://github.com/kalispera/babel-plugin-transform-jsx-directives.git"
   },
-  "keywords": ["jsx", "react", "directive", "babel"],
+  "keywords": [
+    "jsx",
+    "react",
+    "directive",
+    "babel"
+  ],
   "author": "Hannes Diercks",
   "license": "MIT",
   "bugs": {
-    "url":
-      "https://github.com/kalispera/babel-plugin-transform-jsx-directives/issues"
+    "url": "https://github.com/kalispera/babel-plugin-transform-jsx-directives/issues"
   },
   "jest": {
     "transform": {
@@ -42,8 +43,7 @@
       }
     }
   },
-  "homepage":
-    "https://github.com/kalispera/babel-plugin-transform-jsx-directives#readme",
+  "homepage": "https://github.com/kalispera/babel-plugin-transform-jsx-directives#readme",
   "release": {
     "verifyConditions": "condition-circle"
   },
@@ -55,7 +55,7 @@
     "babel-preset-env": "1.6.1",
     "babel-preset-react": "6.24.1",
     "codecov": "3.0.0",
-    "condition-circle": "1.6.0",
+    "condition-circle": "2.0.1",
     "eslint": "4.13.1",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-plugin-import": "2.8.0",
