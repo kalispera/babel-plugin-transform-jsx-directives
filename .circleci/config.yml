@@ -5,10 +5,26 @@ defaults: &defaults
 
 version: 2
 jobs:
-  install:
+  lockfile:
     <<: *defaults
     steps:
       - checkout
+      - run:
+          name: 'Install greenkeeper-lockfile'
+          command: 'npm install greenkeeper-lockfile --no-save'
+      - run:
+          name: 'Update lockfile'
+          command: '$(npm bin)/greenkeeper-lockfile-update && $(npm bin)/greenkeeper-lockfile-upload'
+      - save_cache:
+          paths:
+            - ~/repo
+          key: v1-repo-{{ .Revision }}
+  install:
+    <<: *defaults
+    steps:
+      - restore_cache:
+          keys:
+          - v1-repo-{{ .Revision }}
       - run:
           name: Create package-lock.json checksum
           command: sha256sum package-lock.json > .package-lock-sum
@@ -18,9 +34,6 @@ jobs:
       - run:
           name: Install
           command: npm install
-      - run:
-          name: 'Update lockfile'
-          command: '$(npm bin)/greenkeeper-lockfile-update && $(npm bin)/greenkeeper-lockfile-upload'
       - save_cache:
           paths:
             - node_modules
@@ -77,7 +90,10 @@ workflows:
   version: 2
   test-and-deploy:
     jobs:
-      - install
+      - lockfile
+      - install:
+          requires:
+            - lockfile
       - lint:
           requires:
             - install
