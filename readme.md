@@ -20,62 +20,63 @@ Add in your `.babelrc`
 ```json
 {
   "plugins": [
-    ["transform-jsx-directives", {
-      "directives": [
-        {
-          "type": "element",
-          "name": "button",
-          "priority": 100,
-          "source": "./myButtonDirective.js",
-          "bootstrap": {
-            "colour": "fuchsia"
-          }
-        },
-        ["directive-module", { "colour": "pink" }],
-        "path/to/a/directiveConfiguration.js"
-      ]
-    }]
+    [
+      "transform-jsx-directives",
+      {
+        "directives": [
+          {
+            "type": "element",
+            "name": "button",
+            "priority": 100,
+            "source": "./myButtonDirective.js",
+            "bootstrap": {
+              "colour": "fuchsia"
+            }
+          },
+          ["directive-module", { "colour": "pink" }],
+          "path/to/a/directiveConfiguration.js"
+        ]
+      }
+    ]
   ]
 }
 ```
 
 ## Plugin Options
 
- - `directives` (Array): A mandatory* array of [configurations](#directive-configuration)
-   or node modules/files providing one or more configurations.
+* `directives` (Array): A mandatory\* array of [configurations](#directive-configuration)
+  or node modules/files providing one or more configurations.
 
-_* Not really mandatory, but this plugin wont do nothing without specific configurations_
+_\* Not really mandatory, but this plugin wont do nothing without specific configurations_
 
 ### Directive Configuration
 
- - `name` (String): When a element or attribute (see type) matches the name,
-   the directive gets applied
- - `source` (String|Function): path to the directive runtime component or
-   function returning the path. Function gets called with transformed options
-   and bootstrap.
- - `type` ("attribute"|"element"): whether the directive should be applied
-   on matches against element names or attribute names. Default: "attribute"
- - `priority` (Integer): Directives with a higher priority run first, Default: 0
- - `bootstrap` (any): If present, a `bootstrap` function is imported
-   from `source` and called a single time when the application starts with any value
-   provided to `bootstrap`. The value is being JSON encoded, in order to be moved
-   from config to runtime, so methods will get lost.
- - `transformOptions` (Function): Only for attribute directives. Optional transformer
-   for the options node. See [Transform Options](#transform-options)
-
+* `name` (String): When a element or attribute (see type) matches the name,
+  the directive gets applied
+* `source` (String|Function): path to the directive runtime component or
+  function returning the path. Function gets called with transformed options
+  and bootstrap.
+* `type` ("attribute"|"element"): whether the directive should be applied
+  on matches against element names or attribute names. Default: "attribute"
+* `priority` (Integer): Directives with a higher priority run first, Default: 0
+* `bootstrap` (any): If present, a `bootstrap` function is imported
+  from `source` and called a single time when the application starts with any value
+  provided to `bootstrap`. The value is being JSON encoded, in order to be moved
+  from config to runtime, so methods will get lost.
+* `transformOptions` (Function): Only for attribute directives. Optional transformer
+  for the options node. See [Transform Options](#transform-options)
 
 ## Why?
 
-My main motivation behind this plugin is to provide a clean way of 
+My main motivation behind this plugin is to provide a clean way of
 extending the feature set of a JSX target library.
 
 I recommend sticking to plain old components and higher order components
 when working on application specific solutions.
 
 Use directives in cases where you want to provide a globally available
-abstraction for a complex solution that feels like it's part of the 
+abstraction for a complex solution that feels like it's part of the
 library you're using.
-
 
 ## How does this work?
 
@@ -106,24 +107,22 @@ import _buttonDirective from './HaddawayButton.js';
   Elm="button"
   props={{}}
   next={(_Elm, _props) => <_Elm {..._props} />}
-/>
+/>;
 ```
 
 the last bit is now the implementation of `HaddawayButton.js`
 
 ```jsx
 function whatIsLove() {
-  alert('baby don\'t hurt me');
+  alert("baby don't hurt me");
 }
 
 export default function HaddawayButton({ Elm, props, next }) {
   return next(Elm, { ...props, onClick: whatIsLove });
-} 
+}
 ```
 
 and voilà you have an earworm.
-
-
 
 ## Directive Runtime Components
 
@@ -132,26 +131,26 @@ receive `Elm`, `props`, `next` and attribute directives additionally `options`.
 Since the runtime is just another component, it can utilize all features of the
 target library, like [context](https://facebook.github.io/react/docs/context.html) in React.
 
-- `Elm`: Element name or component, the directive was matched against.
+* `Elm`: Element name or component, the directive was matched against.
 
-  Directives can manipulate the element by passing a new one into `next`.   
+  Directives can manipulate the element by passing a new one into `next`.  
   Since multiple directives can be applied to the same element, `Elm` is not necessarily
   the original element.
 
-- `props`: Object of all attributes used on the element.
+* `props`: Object of all attributes used on the element.
 
   Can be manipulated by passing new props into `next`.  
   Since multiple directives can be applied to the same element, these are not necessarily
   the original attributes.
 
-- `next`: Callback function that will apply the next directive or create the child elements.
+* `next`: Callback function that will apply the next directive or create the child elements.
 
-  A no-op directive would just `return next(Elm, props)`.  
+  A no-op directive would just `return next(Elm, props)`.
 
   A directive can also decide to not call `next` at all and prevent creation
   of all child components.
 
-- `options`: Value of the directive attribute. _(Only available on attribute directives)_
+* `options`: Value of the directive attribute. _(Only available on attribute directives)_
 
   Given this jsx `<div foo="bar" />`, a `foo` attribute directive would receive
   `"bar"` as `options`:
@@ -164,7 +163,7 @@ target library, like [context](https://facebook.github.io/react/docs/context.htm
   Directives can provide an [option transformer](#transform-options) in order to
   mutate own options beforehand.
 
-- `as`: JSX namespace of the directive attribute. _(Only available on attribute directives)_
+* `as`: JSX namespace of the directive attribute. _(Only available on attribute directives)_
 
   Given this jsx `<div onClick:alert="Hello World!" />`, a `alert` attribute directive would
   receive `"onClick"` as `as`.
@@ -178,7 +177,7 @@ for attribute directives pre-runtime but it also could be used for validation or
 
 ### Example:
 
-Lets say our directive expects an object as options but we want to provide a 
+Lets say our directive expects an object as options but we want to provide a
 shorthand for `{ value: 'Foo' }` and just use `"Foo"` in that case.
 
 ```js
@@ -202,12 +201,10 @@ shorthand for `{ value: 'Foo' }` and just use `"Foo"` in that case.
 }
 ```
 
-
-License
--------
+## License
 
 > The MIT License
-> 
+>
 > Copyright (C) 2017 Hannes Diercks
 >
 > Permission is hereby granted, free of charge, to any person obtaining a copy of

@@ -1,4 +1,3 @@
-
 function getAttributeValue(t, attribute) {
   if (attribute.get('value').node === null) {
     return t.booleanLiteral(true);
@@ -15,7 +14,7 @@ export default function attributesToObject(t, someAttributes, directives) {
     .map(({ name }) => name);
 
   const attributes = someAttributes
-    .filter((attribute) => {
+    .filter(attribute => {
       if (t.isJSXSpreadAttribute(attribute.node)) {
         return true;
       }
@@ -26,14 +25,16 @@ export default function attributesToObject(t, someAttributes, directives) {
 
       return attributeDirectives.indexOf(name) === -1;
     })
-    .map((attribute) => {
+    .map(attribute => {
       if (t.isJSXSpreadAttribute(attribute.node)) {
-        return t.spreadProperty(t.identifier(attribute.get('argument.name').node));
+        return t.spreadProperty(
+          t.identifier(attribute.get('argument.name').node),
+        );
       }
 
       return t.objectProperty(
         t.identifier(attribute.get('name.name').node),
-        getAttributeValue(t, attribute)
+        getAttributeValue(t, attribute),
       );
     });
 

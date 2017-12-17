@@ -9,17 +9,24 @@ export default function importDirective(
   someDirectiveSource,
   bootstrap,
   options,
-  basePath
+  basePath,
 ) {
-  const directiveSource = typeof someDirectiveSource === 'function'
-    ? someDirectiveSource(options, bootstrap)
-    : someDirectiveSource;
+  const directiveSource =
+    typeof someDirectiveSource === 'function'
+      ? someDirectiveSource(options, bootstrap)
+      : someDirectiveSource;
 
   const resolvedSource = basePath
     ? resolveSource(basePath, directiveSource)
     : directiveSource;
 
-  const someImport = getImport(babel, path, directiveName, resolvedSource, bootstrap);
+  const someImport = getImport(
+    babel,
+    path,
+    directiveName,
+    resolvedSource,
+    bootstrap,
+  );
 
   if (bootstrap != null) {
     insertBootstrap(babel, someImport, bootstrap);

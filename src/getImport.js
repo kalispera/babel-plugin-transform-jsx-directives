@@ -1,10 +1,16 @@
 import getRootPath from './getRootPath';
 import IS_DIRECTIVE_IMPORT from './IS_DIRECTIVE_IMPORT';
 
-export default function getImport({ types: t }, path, directiveName, directiveSource, bootstrap) {
+export default function getImport(
+  { types: t },
+  path,
+  directiveName,
+  directiveSource,
+  bootstrap,
+) {
   const rootPath = getRootPath(path);
 
-  const existingImport = rootPath.get('body').find((bodyPath) => {
+  const existingImport = rootPath.get('body').find(bodyPath => {
     if (!bodyPath.isImportDeclaration()) {
       return false;
     }
@@ -17,20 +23,19 @@ export default function getImport({ types: t }, path, directiveName, directiveSo
   }
 
   const uid = rootPath.scope.generateUidIdentifier(`${directiveName}Directive`);
-  const bootstrapUid = rootPath.scope.generateUidIdentifier(`${directiveName}Bootstrap`);
+  const bootstrapUid = rootPath.scope.generateUidIdentifier(
+    `${directiveName}Bootstrap`,
+  );
 
   const specifiers = [t.importDefaultSpecifier(uid)];
 
   if (bootstrap != null) {
-    specifiers.push(t.importSpecifier(
-      bootstrapUid,
-      t.identifier('bootstrap')
-    ));
+    specifiers.push(t.importSpecifier(bootstrapUid, t.identifier('bootstrap')));
   }
 
   const newImport = t.importDeclaration(
     specifiers,
-    t.stringLiteral(directiveSource)
+    t.stringLiteral(directiveSource),
   );
 
   rootPath.unshiftContainer('body', newImport);
@@ -41,4 +46,3 @@ export default function getImport({ types: t }, path, directiveName, directiveSo
 
   return importPath;
 }
-

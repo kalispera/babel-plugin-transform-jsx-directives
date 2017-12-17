@@ -27,7 +27,9 @@ function load(directives, original = false) {
 function getBootstrapOptions(directive) {
   if (Array.isArray(directive)) {
     if (directive.length > 2) {
-      throw new Error(`Unexpected directive declaration ${JSON.stringify(directive)}`);
+      throw new Error(
+        `Unexpected directive declaration ${JSON.stringify(directive)}`,
+      );
     }
 
     return {
@@ -40,11 +42,13 @@ function getBootstrapOptions(directive) {
 }
 
 function prepare(directiveWithOptions) {
-  const { directive: someDirective, bootstrap } = getBootstrapOptions(directiveWithOptions);
+  const { directive: someDirective, bootstrap } = getBootstrapOptions(
+    directiveWithOptions,
+  );
 
   if (typeof someDirective === 'string') {
     const { file, directives } = load(someDirective);
-    return toArray(directives).map((directive) => {
+    return toArray(directives).map(directive => {
       return Object.assign({ bootstrap }, directive, {
         basePath: file,
       });
@@ -55,10 +59,13 @@ function prepare(directiveWithOptions) {
 }
 
 function addDefaults(directive) {
-  return Object.assign({
-    type: 'attribute',
-    priority: 0,
-  }, directive);
+  return Object.assign(
+    {
+      type: 'attribute',
+      priority: 0,
+    },
+    directive,
+  );
 }
 
 export default function normalizeDirectives(directives) {
@@ -66,9 +73,11 @@ export default function normalizeDirectives(directives) {
     return [];
   }
 
-  return directives.reduce((memo, directive) => {
-    return memo.concat(prepare(directive).map(addDefaults));
-  }, []).sort(({ priority }, { priority: otherPriority }) => {
-    return priority - otherPriority;
-  });
+  return directives
+    .reduce((memo, directive) => {
+      return memo.concat(prepare(directive).map(addDefaults));
+    }, [])
+    .sort(({ priority }, { priority: otherPriority }) => {
+      return priority - otherPriority;
+    });
 }

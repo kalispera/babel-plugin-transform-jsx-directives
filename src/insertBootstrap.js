@@ -8,15 +8,21 @@ if (!BOOTSTRAP_NAME.__called) {
 `;
 
 function appendBootstrap(t, programBody, bootstrapNode) {
-  programBody.find((childPath) => {
-    return !t.isImportDeclaration(childPath);
-  }).insertBefore(bootstrapNode);
+  programBody
+    .find(childPath => {
+      return !t.isImportDeclaration(childPath);
+    })
+    .insertBefore(bootstrapNode);
 }
 
 export default function insertBootstrap({ types: t }, importPath, options) {
-  const BOOTSTRAP_NAME = t.identifier(importPath.get('specifiers.1.local.name').node);
+  const BOOTSTRAP_NAME = t.identifier(
+    importPath.get('specifiers.1.local.name').node,
+  );
 
-  const buildGlobalOptionsNode = template(`var x = ${JSON.stringify(options)};`);
+  const buildGlobalOptionsNode = template(
+    `var x = ${JSON.stringify(options)};`,
+  );
   const BOOTSTRAP_OPTIONS = buildGlobalOptionsNode().declarations[0].init;
 
   const buildBootstrap = template(bootstrapTemplate);
@@ -26,9 +32,5 @@ export default function insertBootstrap({ types: t }, importPath, options) {
     BOOTSTRAP_OPTIONS,
   });
 
-  appendBootstrap(
-    t,
-    importPath.parentPath.get('body'),
-    bootstrapNode
-  );
+  appendBootstrap(t, importPath.parentPath.get('body'), bootstrapNode);
 }

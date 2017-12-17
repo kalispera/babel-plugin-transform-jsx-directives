@@ -29,7 +29,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
         const directives = getApplicableDirectives(
           babel,
           openingElement,
-          normalizeDirectives(state.opts && state.opts.directives)
+          normalizeDirectives(state.opts && state.opts.directives),
         );
         const name = path.get('name.name').node;
 
@@ -45,7 +45,7 @@ export default function babelPluginTransformJsxDirectives(babel) {
         const directives = getApplicableDirectives(
           babel,
           path,
-          normalizeDirectives(state.opts && state.opts.directives)
+          normalizeDirectives(state.opts && state.opts.directives),
         );
 
         if (!directives.length) {
@@ -55,81 +55,78 @@ export default function babelPluginTransformJsxDirectives(babel) {
         const jsxElement = path.parentPath;
         const name = path.get('name.name').node;
         const isComponent = name[0] === name[0].toUpperCase();
-        const attributes = attributesToObject(t, path.get('attributes'), directives);
+        const attributes = attributesToObject(
+          t,
+          path.get('attributes'),
+          directives,
+        );
         const { Elm, props } = getUidIds(path);
         const { node: { children } } = jsxElement;
 
-        const { inner } = directives.reduce((
-          memo,
-          {
-            name: directiveName,
-            as,
-            source,
-            bootstrap,
-            options,
-            basePath,
-          },
-          i
-        ) => {
-          const localName = importDirective(
-            babel,
-            path,
-            directiveName,
-            source,
-            bootstrap,
-            options,
-            basePath
-          );
+        const { inner } = directives.reduce(
+          (
+            memo,
+            { name: directiveName, as, source, bootstrap, options, basePath },
+            i,
+          ) => {
+            const localName = importDirective(
+              babel,
+              path,
+              directiveName,
+              source,
+              bootstrap,
+              options,
+              basePath,
+            );
 
-          const isOuter = i === directives.length - 1;
-          if (!isOuter) {
-            const {
-              Elm: newElm,
-              props: newProps,
-            } = getUidIds(path);
+            const isOuter = i === directives.length - 1;
+            if (!isOuter) {
+              const { Elm: newElm, props: newProps } = getUidIds(path);
+
+              return {
+                inner: createDirective(
+                  t,
+                  localName,
+                  memo,
+                  t.jSXExpressionContainer(newElm),
+                  newProps,
+                  options,
+                  as,
+                ),
+                Elm: newElm,
+                props: newProps,
+              };
+            }
 
             return {
               inner: createDirective(
                 t,
                 localName,
                 memo,
-                t.jSXExpressionContainer(newElm),
-                newProps,
+                isComponent
+                  ? t.jSXExpressionContainer(t.identifier(name))
+                  : t.stringLiteral(name),
+                attributes,
                 options,
-                as
+                as,
               ),
-              Elm: newElm,
-              props: newProps,
             };
-          }
-
-          return {
-            inner: createDirective(
-              t,
-              localName,
-              memo,
-              isComponent
-                ? t.jSXExpressionContainer(t.identifier(name))
-                : t.stringLiteral(name),
-              attributes,
-              options,
-              as
+          },
+          {
+            Elm,
+            props,
+            inner: t.jSXElement(
+              t.jSXOpeningElement(
+                t.jSXIdentifier(Elm.name),
+                [t.jSXSpreadAttribute(props)],
+                children.length === 0,
+              ),
+              t.jSXClosingElement(t.jSXIdentifier(Elm.name)),
+              children,
+              children.length === 0,
             ),
-          };
-        }, {
-          Elm,
-          props,
-          inner: t.jSXElement(
-            t.jSXOpeningElement(
-              t.jSXIdentifier(Elm.name),
-              [t.jSXSpreadAttribute(props)],
-              children.length === 0
-            ),
-            t.jSXClosingElement(t.jSXIdentifier(Elm.name)),
-            children,
-            children.length === 0
-          ),
-        });
+          },
+        );
 
         jsxElement.replaceWith(inner);
       },
