@@ -1,83 +1,77 @@
+defaults: &defaults
+  docker:
+    - image: circleci/node:9
+  working_directory: ~/repo
+
 version: 2
 jobs:
   install:
-    docker:
-      - image: circleci/node:8
-    working_directory: ~/repo
+    <<: *defaults
     steps:
       - checkout
       - run:
-          name: save SHA to a file
-          command: echo $CIRCLE_SHA1 > .circle-sha
+          name: Create package-lock.json checksum
+          command: sha256sum package-lock.json > .package-lock-sum
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-      - run: npm install
+          - v1-dependencies-{{ checksum ".package-lock-sum" }}
+      - run:
+          name: Install
+          command: npm install
+      - run:
+          name: 'Update lockfile'
+          command: '$(npm bin)/greenkeeper-lockfile-update && $(npm bin)/greenkeeper-lockfile-upload'
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+          key: v1-dependencies-{{ checksum ".package-lock-sum" }}
       - save_cache:
           paths:
             - ~/repo
-          key: v1-repo-{{ checksum ".circle-sha" }}
+          key: v1-repo-{{ .Revision }}
   lint:
-    docker:
-      - image: circleci/node:8
-    working_directory: ~/repo
+    <<: *defaults
     steps:
-      - run:
-          name: save SHA to a file
-          command: echo $CIRCLE_SHA1 > .circle-sha
       - restore_cache:
           keys:
-          - v1-repo-{{ checksum ".circle-sha" }}
-      - run: npm run lint
+          - v1-repo-{{ .Revision }}
+      - run:
+          name: Lint
+          command: npm run lint
   test:
-    docker:
-      - image: circleci/node:8
-    working_directory: ~/repo
+    <<: *defaults
     steps:
-      - run:
-          name: save SHA to a file
-          command: echo $CIRCLE_SHA1 > .circle-sha
       - restore_cache:
           keys:
-          - v1-repo-{{ checksum ".circle-sha" }}
-      - run: $(npm bin)/greenkeeper-lockfile-update
-      - run: npm test -- --coverage
-      - run: $(npm bin)/greenkeeper-lockfile-upload
+          - v1-repo-{{ .Revision }}
+      - run:
+          name: Run unit tests
+          command: npm test -- --coverage
       - save_cache:
           paths:
             - coverage
-          key: v1-coverage-{{ checksum ".circle-sha" }}
+          key: v1-coverage-{{ .Revision }}
   codecov:
-    docker:
-      - image: circleci/node:8
-    working_directory: ~/repo
+    <<: *defaults
     steps:
+      - restore_cache:
+          keys:
+          - v1-repo-{{ .Revision }}
+      - restore_cache:
+          keys:
+          - v1-coverage-{{ .Revision }}
       - run:
-          name: save SHA to a file
-          command: echo $CIRCLE_SHA1 > .circle-sha
-      - restore_cache:
-          keys:
-          - v1-repo-{{ checksum ".circle-sha" }}
-      - restore_cache:
-          keys:
-          - v1-coverage-{{ checksum ".circle-sha" }}
-      - run: $(npm bin)/codecov
+          name: Upload coverage
+          command: $(npm bin)/codecov
   deploy:
-    docker:
-      - image: circleci/node:8
-    working_directory: ~/repo
+    <<: *defaults
     steps:
-      - run:
-          name: save SHA to a file
-          command: echo $CIRCLE_SHA1 > .circle-sha
       - restore_cache:
           keys:
-          - v1-repo-{{ checksum ".circle-sha" }}
-      - run: npm run semantic-release || true
+          - v1-repo-{{ .Revision }}
+      - run:
+          name: Release
+          command: npm run semantic-release || true
 
 workflows:
   version: 2
