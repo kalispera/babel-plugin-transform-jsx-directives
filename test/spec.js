@@ -2,13 +2,15 @@ import * as babel from 'babel-core';
 import plugin from '../src/index';
 import errorMatching from './helpers/errorMatching';
 
-jest.mock('conventional-changelog-core');
+jest.mock('conventional-changelog-angular');
 
 function transform(code, options = {}, presets = []) {
-  return babel.transform(code, {
-    presets,
-    plugins: [[plugin(babel), options]],
-  }).code.replace(new RegExp(process.cwd(), 'g'), '.');
+  return babel
+    .transform(code, {
+      presets,
+      plugins: [[plugin(babel), options]],
+    })
+    .code.replace(new RegExp(process.cwd(), 'g'), '.');
 }
 
 describe('babel-plugin-transform-jsx-directives', () => {
@@ -17,9 +19,8 @@ describe('babel-plugin-transform-jsx-directives', () => {
   });
 
   it('transforms an element directive', () => {
-    expect(transform(
-      '<html foo="bar">foo</html>',
-      {
+    expect(
+      transform('<html foo="bar">foo</html>', {
         directives: [
           {
             name: 'html',
@@ -27,62 +28,57 @@ describe('babel-plugin-transform-jsx-directives', () => {
             source: './test/directives/html.js',
           },
         ],
-      }
-    )).toMatchSnapshot();
+      }),
+    ).toMatchSnapshot();
   });
 
   it('handles directive paths', () => {
-    expect(transform(
-      '<html foo="bar">foo</html>',
-      {
-        directives: [
-          'test/directives/html.js',
-        ],
-      }
-    )).toMatchSnapshot();
+    expect(
+      transform('<html foo="bar">foo</html>', {
+        directives: ['test/directives/html.js'],
+      }),
+    ).toMatchSnapshot();
   });
 
   it('handles boolean props', () => {
-    expect(transform(
-      '<html foo>foo</html>',
-      {
-        directives: [
-          'test/directives/html.js',
-        ],
-      }
-    )).toMatchSnapshot();
+    expect(
+      transform('<html foo>foo</html>', {
+        directives: ['test/directives/html.js'],
+      }),
+    ).toMatchSnapshot();
   });
 
   it('transforms an atrribute directive', () => {
-    expect(transform(
-      '<Button action={click} foo={bar}>baz</Button>',
-      {
+    expect(
+      transform('<Button action={click} foo={bar}>baz</Button>', {
         directives: [
           {
             name: 'action',
             source: './test/directives/action.js',
           },
         ],
-      }
-    )).toMatchSnapshot();
+      }),
+    ).toMatchSnapshot();
   });
 
   it('applies directives in nested elements', () => {
-    expect(transform(
-      `
+    expect(
+      transform(
+        `
       <a action="none">
         <b action="all" />
       </a>
       `,
-      {
-        directives: [
-          {
-            name: 'action',
-            source: './test/directives/action.js',
-          },
-        ],
-      }
-    )).toMatchSnapshot();
+        {
+          directives: [
+            {
+              name: 'action',
+              source: './test/directives/action.js',
+            },
+          ],
+        },
+      ),
+    ).toMatchSnapshot();
   });
 
   it('applies multiple directives on same element', () => {
@@ -103,7 +99,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
             source: './test/directives/action.js',
           },
         ],
-      }
+      },
     );
 
     expect(code).toMatchSnapshot();
@@ -115,10 +111,8 @@ describe('babel-plugin-transform-jsx-directives', () => {
       <html action="test" />
       `,
       {
-        directives: [
-          './test/directives/multi.js',
-        ],
-      }
+        directives: ['./test/directives/multi.js'],
+      },
     );
 
     expect(code).toMatchSnapshot();
@@ -137,7 +131,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
             source: './test/directives/html.js',
           },
         ],
-      }
+      },
     );
 
     expect(code).toMatchSnapshot();
@@ -160,14 +154,16 @@ describe('babel-plugin-transform-jsx-directives', () => {
             source: './test/directives/baz.js',
           },
         ],
-      }
+      },
     );
 
     expect(code).toMatchSnapshot();
   });
 
   it('imports directive module', () => {
-    const code = transform('<changelog />', { directives: ['conventional-changelog-core'] });
+    const code = transform('<changelog />', {
+      directives: ['conventional-changelog-angular'],
+    });
 
     expect(code).toMatchSnapshot();
   });
@@ -188,17 +184,16 @@ describe('babel-plugin-transform-jsx-directives', () => {
           {
             name: 'foo',
             transformOptions({ types: t }, node) {
-              return t.jSXExpressionContainer(t.objectExpression([
-                t.objectProperty(
-                  t.identifier('value'),
-                  node
-                ),
-              ]));
+              return t.jSXExpressionContainer(
+                t.objectExpression([
+                  t.objectProperty(t.identifier('value'), node),
+                ]),
+              );
             },
             source: 'foo.js',
           },
         ],
-      }
+      },
     );
 
     expect(code).toMatchSnapshot();
@@ -206,7 +201,9 @@ describe('babel-plugin-transform-jsx-directives', () => {
 
   it('throws when directive declaration has more than two entries', () => {
     expect(() => {
-      transform('<foo />', { directives: [['conventional-changelog-core', { foo: true }, 'extra']] });
+      transform('<foo />', {
+        directives: [['conventional-changelog-core', { foo: true }, 'extra']],
+      });
     }).toThrow(errorMatching('Unexpected directive declaration'));
   });
 
@@ -216,7 +213,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
         `
         <div bar:foo="baz" />
         `,
-        { directives: [{ name: 'foo', source: 'foo.js' }] }
+        { directives: [{ name: 'foo', source: 'foo.js' }] },
       );
 
       expect(code).toMatchSnapshot();
@@ -229,7 +226,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
           <div bar:foo="baz" />
           `,
           { directives: [{ name: 'foo', source: 'foo.js' }] },
-          ['react']
+          ['react'],
         );
       }).not.toThrowError();
     });
@@ -241,7 +238,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
           <div bar:baz="baz" />
           `,
           { directives: [{ name: 'foo', source: 'foo.js' }] },
-          ['react']
+          ['react'],
         );
       }).toThrowError(errorMatching('ReactJSX is not XML'));
     });
@@ -251,7 +248,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
         `
         <div:foo bar:foo="baz" />
         `,
-        { directives: [{ name: 'foo', source: 'foo.js' }] }
+        { directives: [{ name: 'foo', source: 'foo.js' }] },
       );
 
       expect(code).toMatchSnapshot();
@@ -262,7 +259,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
         `
         <div bar:foo="baz" qux:foo="quux" />
         `,
-        { directives: [{ name: 'foo', source: 'foo.js' }] }
+        { directives: [{ name: 'foo', source: 'foo.js' }] },
       );
 
       expect(code).toMatchSnapshot();
@@ -277,9 +274,13 @@ describe('babel-plugin-transform-jsx-directives', () => {
         `,
         {
           directives: [
-            { name: 'bootstrap', source: 'bootstrap.js', bootstrap: { foo: 'bar' } },
+            {
+              name: 'bootstrap',
+              source: 'bootstrap.js',
+              bootstrap: { foo: 'bar' },
+            },
           ],
-        }
+        },
       );
 
       expect(code).toMatchSnapshot();
@@ -291,10 +292,8 @@ describe('babel-plugin-transform-jsx-directives', () => {
         <html />
         `,
         {
-          directives: [
-            ['test/directives/html.js', false],
-          ],
-        }
+          directives: [['test/directives/html.js', false]],
+        },
       );
 
       expect(code).toMatchSnapshot();
@@ -318,7 +317,7 @@ describe('babel-plugin-transform-jsx-directives', () => {
               source: sourceGetter,
             },
           ],
-        }
+        },
       );
 
       expect(sourceGetter).toHaveBeenCalledTimes(1);
@@ -340,18 +339,17 @@ describe('babel-plugin-transform-jsx-directives', () => {
             {
               name: 'foo',
               transformOptions({ types: t }, node) {
-                return t.jSXExpressionContainer(t.objectExpression([
-                  t.objectProperty(
-                    t.identifier('value'),
-                    node
-                  ),
-                ]));
+                return t.jSXExpressionContainer(
+                  t.objectExpression([
+                    t.objectProperty(t.identifier('value'), node),
+                  ]),
+                );
               },
               bootstrap,
               source: sourceGetter,
             },
           ],
-        }
+        },
       );
 
       expect(sourceGetter).toHaveBeenCalledTimes(1);
