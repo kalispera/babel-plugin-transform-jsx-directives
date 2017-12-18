@@ -61,7 +61,7 @@
     "eslint-config-prettier": "2.9.0",
     "eslint-plugin-import": "2.8.0",
     "greenkeeper-lockfile": "1.12.0",
-    "jest": "21.2.1",
+    "jest": "22.0.0",
     "semantic-release": "11.0.2"
   },
   "dependencies": {
