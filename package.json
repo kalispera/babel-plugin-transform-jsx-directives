@@ -7,7 +7,8 @@
     "test": "jest",
     "lint": "eslint .",
     "build": "rm -rf lib && babel src -d lib",
-    "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post",
+    "update-lockfile": "greenkeeper-lockfile-update && greenkeeper-lockfile-upload"
   },
   "repository": {
     "type": "git",
