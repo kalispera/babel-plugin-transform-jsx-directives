@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
-    "babel-core": "6.26.0",
+    "babel-core": "6.26.2",
     "babel-jest": "23.0.0-alpha.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-env": "1.6.1",
@@ -61,8 +61,8 @@
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-config-prettier": "2.9.0",
     "eslint-plugin-import": "2.11.0",
-    "greenkeeper-lockfile": "1.13.3",
-    "jest": "22.1.4",
+    "greenkeeper-lockfile": "1.14.0",
+    "jest": "22.4.3",
     "semantic-release": "15.1.7"
   },
   "dependencies": {
